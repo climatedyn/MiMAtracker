@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# Note: Debug option 1 (-D 1); first map only (-M 1,1);
+# use level variable as ensemble (-l ensemble_member);
+# use first ensemble (-L 1);
+# -p is path to udunits.dat
+#
+# The input j2.nc is in NetCDF3 format. This was output using cdo:
+#
+# Try run-nc2cmp SIM 2000 Mslp 3hr
+
+alias read_nc2cmp='./cycbin/read_nc2cmp'
+
+if [[ $# -ne 4 ]]; then
+  echo "Usage: run-nc2cmp model year (4-digits) level frequency"
+  echo "e.g.,  run-nc2cmp era5 1979 Mslp 3hr"
+  echo "e.g.,  run-nc2cmp SIM 2000 Mslp 3hr"
+  exit
+else
+  d=$1
+  yr=$2
+  lev=$3
+  freq=$4
+fi
+
+dNC=./data/  #path to input data
+:
+
+echo ${dNC}
+echo $lev
+echo $freq
+if [[ "$lev" == "Mslp" ]];then
+fNC=${dNC}${d}.${lev}.${yr}.${freq}.nc
+else
+echo "wrong branch... FIX"
+fNC=${dNC}${d}.Z${lev}.${yr}.${freq}.nc
+fi
+:
+echo $fNC
+if [ -e $fNC ]; then
+echo $fNC
+:
+echo $lev
+  if [[ $lev == "Mslp" ]]; then
+    echo "CLB - First Branch"
+    mkdir -p cmp_$d
+    fCMP=cmp_$d/$d.$lev.${yr}.cmp
+    read_nc2cmp -i $fNC -o $fCMP -d "lon,lat,time" \
+    -u slp -v PMSL -U hPa -s 1.0 -r $d -p cycbin/udunits.dat  
+    #-u slp -v PMSL -U pascals -s 0.01 -r $d -p cycbin/udunits.dat  
+    # MiMA has slp in hPa
+  elif [[ $lev -eq "Mslp" ]]; then
+    echo "CLB - Second Branch"
+    mkdir -p cmp_$d
+    fCMP=cmp_$d/$d.Z$lev.${yr}.cmp
+    read_nc2cmp -I -i $fNC -o $fCMP -d "lon,lat,time" \
+    -u slp -s 0.01 -U pascals -v Z$lev -r $d -g "2.8125x2.7893DEG" -p cycbin/udunits.dat    
+    # make sure that the dimensions are equal to the one in the netcdf file
+    # adapt variable name (var1), factor behind -s must be adapted if already in hPa 
+  fi
+fi
+:
+exit

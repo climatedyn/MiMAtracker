@@ -1,0 +1,78 @@
+#!/bin/csh -xfe
+
+alias edcycdat3 ./cycbin/edcycdat
+setenv CYCBIN  cycbin 
+alias trackx   $CYCBIN/trackx.hr 
+alias trackmnx $CYCBIN/trackmnx.hr
+
+if ($#argv != 6) then
+  echo "Usage: run-trk model year (4-digits) pext next hemisphere level"
+  echo "e.g., run-trk era5 1979 no yes 0N Mslp"
+  echo "e.g., run-trk SIM 2000 no no 0S Mslp"
+  exit
+else
+  set d = ($1)
+  @ y = ($2)
+  set pext = ($3) 
+  set next = ($4)
+  set h = ($5)
+  set lev = ($6)
+endif
+echo "Year $y - pext: ($pext) next: ($next)" 
+
+# Location of cycdat files
+ 
+echo ok
+if ($lev == "Mslp") then
+  set CYCDAT = out.${lev}_${d}
+else 
+  set CYCDAT = out.Z${lev}_${d}
+endif
+echo $CYCDAT
+#
+#@ yp = ($y - 1)
+#@ yn = ($y + 1)
+
+#echo "y,yp,yn: "$y $yp $yn
+
+if !(-e $CYCDAT/cycdat.$d.$y.$h) then 
+  echo "ERROR: cycdat.$d.$y.$h not found"
+  exit
+endif
+
+# Update intrack.cur dastrt,dastop parameters
+#sed -e "s/YP/$yp/" intrack.$d | sed -e "s/YN/$yn/" | sed -e "s/YY/$y/" >! intrack.cur
+# LINE BELOW is something I've added to try and fix intrack.cur being empty.
+# sed -e "s/YY/$y/" intrack.$d  >! intrack.cur
+
+# Perform tracking for this season (note: unformatted - binary - trkdat file)
+# Note: For formatted case use -FO
+
+# ORIGINAL COMMENTED OUT
+#trackx -i intrack.cur -FO -c cycdat.tmp >& $CYCDAT/outtr.$y && cat thist?.1 >! trkdat.tmp && \rm -f thist**
+
+#trackx -i intrack.cur -c $CYCDAT/cycdat.$d.$y.$h -FO #>& $CYCDAT/outtr.$y
+#cat thist?.1 >! trkdat.tmp
+
+trackx -FO -i intrack.tmp -c $CYCDAT/cycdat.$d.$y.$h
+touch trackfile
+cat thist?.1 > trackfile
+
+# Convert to text format
+
+# mxj: this is not needed as we have an awk script doing this.
+#       might be good to make this work though???
+
+# THIS IS WHERE IT BREAKS!!! intrkmn.all is empty???
+# trackmnx -i intrkmn.all -o trkdat.txt trkdat.tmp
+
+# Replace "  nan" with "0.999" in q column
+
+#sed -e "s/\ \ nan/0\.999/" trkdat.txt >! $CYCDAT/$d.${y}.$h.trk
+
+# ORIGINAL
+#\rm trkdat.txt  trkdat.tmp  cycdat.tmp
+# NEW
+#\rm  cycdat.tmp
+
+exit

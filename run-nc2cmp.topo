@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Note: Debug option 1 (-D 1); first map only (-M 1,1);
+# use level variable as ensemble (-l ensemble_member);
+# use first ensemble (-L 1);
+# -p is path to udunits.dat
+#
+d=$1    # model
+yr=$2   # year or other index
+lev=$3  # level, e.g. Mslp
+freq=$4 # frequency, e.g. 3hr or 6hr or 24hr
+
+alias read_nc2cmp='./cycbin/read_nc2cmp'
+fNC=./data/$d.$lev.$yr.$freq.nc
+echo $fNC
+
+mkdir -p topo
+
+read_nc2cmp -i $fNC -o topo/zs1.${d}.cmp -d "lon,lat,time" \
+-u topo -v Z0 -U M -r ${d} -p ./cycbin/udunits.dat \
+-D 1
+#-M "1,5"
+
+exit

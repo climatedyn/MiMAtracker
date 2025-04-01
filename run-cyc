@@ -1,0 +1,38 @@
+#!/bin/sh
+#set -ex
+# Location of PMSL files
+
+alias cyclocx.hr='./cycbin/cyclocx.hr'
+:
+if [[ $# -ne 4 ]]; then
+  echo "Usage: run-cyc model year (4-digits) hemisphere level"
+  echo "e.g.,  run-cyc era5 1979 0N Mslp"
+  echo "e.g.,  run-cyc SIM 2000 0S Mslp"
+  exit
+else
+  d=$1      # era5
+  yr=$2     # e.g. 1979
+  h=$3      # 0N or 0S (for tracking on northern or southern hemisphere)
+  lev=$4    # Mslp, Z1000, etc.
+fi
+:
+if [[ $lev == "Mslp" ]];then
+  mkdir -p out.${lev}_${d}
+  fout=out.${lev}_${d}/cycdat.$d.$yr.$h
+  fCMP=cmp_${d}/$d.$lev.${yr}.cmp
+else
+  mkdir -p out.Z${lev}_${d}
+  fout=out.Z${lev}_${d}/cycdat.$d.$yr.$h
+  fCMP=cmp_${d}/$d.Z$lev.${yr}.cmp
+fi
+
+if [ -e $fCMP ]; then
+  echo $fCMP
+  echo "start cycloc"
+  :
+  cyclocx.hr -i incycloc.tmp -z topo/zs1.${d}.cmp -c $fout $fCMP
+  #cyclocx.hr -i incycloc.$d.$h -z topo/zs1.${d}.cmp -c $fout $fCMP
+  #cyclocx.hr -i incycloc.$d.$h -c $fout $fCMP
+fi
+:
+exit

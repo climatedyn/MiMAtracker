@@ -1,0 +1,17 @@
+ &nmltrangp ni=61, nj=61, hemis='S', rproj=30, dmode='YMDHM',
+            rdiff=2.0, rdifz=2.0
+ &end
+
+ &nmlcycloc ddhmmn=000600, ddhmmx=000600,
+            dastrt=351226, dastop=361224, hrstrt=3, hrstop=2100,
+            hilo='L',iopmxc=1, istmxc=11, nshell=8, sdrmx=10.,
+            drmx1=0.7, drmx2=0.3, itmx1=20, itmx2=20, diflt1=2., diflt2=2.,
+            cmnh=0.0, cmnc0=0.0, cmnc1=0.5, cmnc2=1, dpmn=-999., swvmn=0.00,
+            fccmn=0.5, cvarad=5, itabc2=2, itabc3=4, itabc4=1,
+            nrddir=18, rdincr=0.5, sphtrg=.false., 
+            rdpgrd=5., npgdir=12, alatgv=8., rhoa=1.2, upfact=1.,
+            zsmax=1000., zscr1=200., zscr2=1000., ftopeq=0.011,
+            cmncw=0.7, dpmnw=-999., swvmnw=0.00, 
+            icendp=2,
+ &end
+
