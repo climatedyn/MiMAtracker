@@ -4,9 +4,9 @@ set -e
 ROOTDIR=../
 TRACKVAR=Mslp # variable to track
 FREQ=6 # data frequency in hours
-SIM=bench # name of simulation
-INDS=$1 # XXXX index of first simulation file. gives name of folder containing output files
-INDE=$2 # XXXX index of last simulation file. gives name of folder containing output files
+SIM=$1 # name of simulation
+INDS=$2 # XXXX index of first simulation file. gives name of folder containing output files
+INDE=$3 # XXXX index of last simulation file. gives name of folder containing output files
 YEAR=2001 # calendar year of zero index simulation file. could be same as INDS
 FILE_TRUNK=atmos_${FREQ}hr.nc # generic filename for simulation output files
 
@@ -17,6 +17,7 @@ SECONDS=0  # to time script
 module load nco
 mkdir -p outputs
 mkdir -p tracks
+mkdir -p data
 
 FIRST_YR=$(( $YEAR+$(printf "%g" $INDS) ))
 LAST_YR=$(( $YEAR+$(printf "%g" $INDE) ))
