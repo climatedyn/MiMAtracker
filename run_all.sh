@@ -1,7 +1,8 @@
 #!/bin/bash
-set -e
+#set -e
+#set -x
 
-ROOTDIR=../
+ROOTDIR=..
 TRACKVAR=Mslp # variable to track
 FREQ=6 # data frequency in hours
 SIM=$1 # name of simulation
