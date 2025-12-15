@@ -101,6 +101,9 @@ cd tracks
 tar -czf MiMA_cyclonetracks_cmip6_surface_${SIM}_None_${FIRST_YR}${LAST_YR}.tar.gz tracks_*.dat
 mv *.tar.gz ../
 
+# cleaning up
+rm -rf data topo tracks out.Mslp_${SIM} cmp_${SIM}
+
 # Convert SECONDS to minutes and seconds
 elapsed_min=$((SECONDS / 60))
 elapsed_sec=$((SECONDS % 60))
