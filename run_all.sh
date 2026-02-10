@@ -8,7 +8,8 @@ FREQ=6 # data frequency in hours
 SIM=$1 # name of simulation
 INDS=$2 # XXXX index of first simulation file. gives name of folder containing output files
 INDE=$3 # XXXX index of last simulation file. gives name of folder containing output files
-YEAR=2001 # calendar year of zero index simulation file. could be same as INDS
+YEAR=1960 # calendar year of zero index simulation file. could be same as INDS
+# if time period includes year 2000, the dates in output file tracks_2000.dat file should be checked and corrected if necessary
 FILE_TRUNK=atmos_${FREQ}hr.nc # generic filename for simulation output files
 
 SECONDS=0  # to time script
