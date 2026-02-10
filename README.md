@@ -4,6 +4,7 @@ Specific structure and suite of codes to run Melbourne University Tracker on MiM
 This assumes a very specific file structure for MiMA output:
 - MiMA is run in yearly chunks, and stored in folders according to iteration.
 - MiMA is run with Julian calendar and does not include full century years like year 100, year 1500, year 2000, etc. This is because that would make a difference to the Gregorian calendar used in the Melbourne Tracker.
+  - if the year 2000 is included, check the dates in output file tracks_2000.dat and manually apply corrections if needed.
 - `MiMAtracker` is placed as a directory under the run directory, i.e. at same level as each yearly output, and contains all files in this repository
     - run directory/
         - MiMAtracker/
@@ -14,6 +15,7 @@ This assumes a very specific file structure for MiMA output:
         - 0002/
             - 0002.atmos_6hr.nc
         - ...
+- if MiMA is run in T42, use branch T42. If run in T85 use branch T85. There are differences in tracking parameters due to differences in resolution.
 
 The main run script is `run_all.sh`, which has some important variables stored at the beginning:
 - `ROOTDIR`: MiMA's run directory as described above. By default this is `../` as per above file structure. But the tracker can also be run anywhere as long as `ROOTDIR` points to the data.
